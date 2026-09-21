@@ -142,8 +142,8 @@ and the array state after each step. The first row is worked.
 | Step | Current `i` | Value at `i` | Children (left, right) | Largest index | Action taken | Array afterward |
 |---|---|---|---|---|---|---|
 | 1 | 0 | 4 | `left=1` (10), `right=2` (8) | 1 | Swap `arr[0]` with `arr[1]` | `[10, 4, 8, 5, 1, 2, 7]` |
-| 2 | TODO | TODO | TODO | TODO | TODO | TODO |
-| 3 | TODO | TODO | TODO | TODO | TODO | TODO |
+| 2 | 1 | 4 | `left=3` (5), `right=4` (1) | 3 | Swap | `[10, 5, 8, 4, 1, 2, 7]` |
+| 3 | 2 | 8 | `left=5` (2), `right=6` (7) | 6 | None | `[10, 5, 8, 4, 1, 2, 7]` |
 
 ### 1.2 Trace: Heapsort extraction passes
 
@@ -156,11 +156,11 @@ the growing sorted suffix. Pass 1 is worked.
 | Pass (`end`) | Swap root with `arr[end]` | Active heap size | Active heap after `max_heapify_down` | Sorted suffix | Full array afterward |
 |---|---|---|---|---|---|
 | 6 | Swap `15` with `7` | 6 | `[12, 7, 8, 6, 2, 3]` | `[15]` | `[12, 7, 8, 6, 2, 3, 15]` |
-| 5 | TODO | TODO | TODO | TODO | TODO |
-| 4 | TODO | TODO | TODO | TODO | TODO |
-| 3 | TODO | TODO | TODO | TODO | TODO |
+| 5 | Swap `12` with `3` | 5 | `[3, 7, 8, 6, 2]` | `[15, 12]` | `[3, 7, 8, 6, 2, 15, 12]` |
+| 4 | Swap `8` with `2` | 4 | `[2, 7, 3, 6]` | `[15, 12, 8]` | `[2, 7, 3, 6, 15, 12, 8]` |
+| 3 | Swap `7` with `2` | 3 | `[2, 6, 3]` | `[15, 12, 8, 7]` | `[2, 6, 3, 15, 12, 8, 7]` |
 | 2 | TODO | TODO | TODO | TODO | TODO |
-| 1 | TODO | TODO | TODO | TODO | TODO |
+| 1 | TODO | TODO | TODO |  TODO | TODO |
 
 Record the final sorted array returned by `heap_sort`.
 
