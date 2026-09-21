@@ -1,6 +1,5 @@
 """Part 2: implement Lomuto partition. The Quicksort wrapper is provided."""
 
-
 def lomuto_partition(arr, low, high):
   """Partition inclusive range [low, high] in place; return pivot index.
 
@@ -8,8 +7,21 @@ def lomuto_partition(arr, low, high):
   Choose arr[high] as pivot. Values to its left must be <= pivot;
   values to its right must be > pivot. Preserve values outside the range.
   """
-  # TODO 2.2: Translate the README's Lomuto pseudocode.
-  raise NotImplementedError("Complete lomuto_partition")
+  pivot = arr[high]
+  i = low - 1
+
+  for j in range (low, high):
+    if arr[j] <= pivot:
+      i += 1
+      value = arr[i]
+      arr[i] = arr[j]
+      arr[j] = value
+
+  value = arr[i + 1]
+  arr[i + 1] = arr[high]
+  arr[high] = value
+
+  return i + 1
 
 
 def quick_sort(arr, low=0, high=None):
@@ -21,6 +33,11 @@ def quick_sort(arr, low=0, high=None):
     quick_sort(arr, low, p - 1)
     quick_sort(arr, p + 1, high)
   return arr
+
+
+if __name__ == "__main__":
+  from lab_checks import check_quicksort
+  raise SystemExit(check_quicksort(lomuto_partition, quick_sort))
 
 
 if __name__ == "__main__":
