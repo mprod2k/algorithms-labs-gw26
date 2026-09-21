@@ -78,15 +78,15 @@ not just their indices. The array state is the state after that comparison.
 
 | Pass | `j` | Values compared | Swap or keep? | Array afterward |
 |---|---|---|---|---|
-| 2 | 0 | TODO | TODO | TODO |
-| 2 | 1 | TODO | TODO | TODO |
-| 2 | 2 | TODO | TODO | TODO |
-| 2 | 3 | TODO | TODO | TODO |
-| 3 | 0 | TODO | TODO | TODO |
-| 3 | 1 | TODO | TODO | TODO |
-| 3 | 2 | TODO | TODO | TODO |
-| 4 | 0 | TODO | TODO | TODO |
-| 4 | 1 | TODO | TODO | TODO |
+| 2 | 0 | `2 > 5` | KEEP | `[2, 5, 1, 5, 6, 9]` |
+| 2 | 1 | `5 > 1` | SWAP | `[2, 1, 5, 5, 6, 9]` |
+| 2 | 2 | `5 > 5` | KEEP | `[2, 1, 5, 5, 6, 9]` |
+| 2 | 3 | `5 > 6` | KEEP | `[2, 1, 5, 5, 6, 9]` |
+| 3 | 0 | `2 > 1` | SWAP | `[1, 2, 5, 5, 6, 9]` |
+| 3 | 1 | `2 > 5` | KEEP |  `[1, 2, 5, 5, 6, 9]`|
+| 3 | 2 | `5 > 5` | KEEP | `[1, 2, 5, 5, 6, 9]` |
+| 4 | 0 | `1 > 2` | KEEP | `[1, 2, 5, 5, 6, 9]` |
+| 4 | 1 | `2 > 5` | KEEP | `[1, 2, 5, 5, 6, 9]` |
 
 Record the sorted suffix guaranteed after each pass, the total comparisons,
 and the total swaps. Why does the algorithm stop after Pass 4 even though the
@@ -117,9 +117,9 @@ stops at the index check, so no further element comparison occurs.
 | `i` | Key | Element comparisons in order | Elements shifted | Insertion index | Array after insertion |
 |---|---|---|---|---|---|
 | 1 | 3 | `7 > 3` (true) | 7 | 0 | `[3, 7, 5, 8, 2]` |
-| 2 | 5 | TODO | TODO | TODO | TODO |
-| 3 | 8 | TODO | TODO | TODO | TODO |
-| 4 | 2 | TODO | TODO | TODO | TODO |
+| 2 | 5 | `7 > 5` (true) | 7 | 1 | `[3, 5, 7, 8, 2]` |
+| 3 | 8 | `7 > 8` (false)| - | 3 | `[3, 5, 7, 8, 2]` |
+| 4 | 2 | `[8 > 2], [7 > 2], [5 > 2], [3 > 2]` (true)| 8, 7, 5, 3 | 0 | `[3, 5, 7, 8, 2]` |
 
 Record the total comparisons and total shifts.
 
@@ -132,6 +132,14 @@ comparing only their numeric values.
 **TODO 1.3A:** On an already sorted array, explain why the provided Bubble Sort
 and Insertion Sort each take O(n) time. What happens to Bubble Sort's best-case
 time if you remove its early-exit check?
+
+*Bubble Sort: Takes O(n) time because of its early-exity check. Given an already sorted array, the check would have to iterate over 'n' elements causing the time complexity to be O(n).*
+
+*Insertion Sort: Takes O(n) time because of its early exit check, it terminates before going into a nested loop if the array is sorted. ANd to check if so, the initial loop has to still iterate over 'n' elements.*
+
+*If Bubble-Sort's early-exit check is removed, given a sorted array (best case scenario) the algorithm will enter in Bubble-Sort's inner loop and end up doing comparisons, ending up with it's worst-case: O(n^2).*
+
+Insertion Sort: 
 
 **TODO 1.3B:** Why do the strict `>` comparisons preserve stability? If Bubble
 Sort uses `>=` instead, does it still sort correctly? Is it still stable? Use
@@ -181,13 +189,13 @@ A swap with the same index is allowed and leaves the array unchanged.
 |---|---|---|---|---|---|
 | Initial | N/A | N/A | None | -1 | `[2, 8, 7, 1, 3, 5, 6, 4]` |
 | 0 | 2 | Yes | 0 and 0 | 0 | `[2, 8, 7, 1, 3, 5, 6, 4]` |
-| 1 | TODO | TODO | TODO | TODO | TODO |
-| 2 | TODO | TODO | TODO | TODO | TODO |
-| 3 | TODO | TODO | TODO | TODO | TODO |
-| 4 | TODO | TODO | TODO | TODO | TODO |
-| 5 | TODO | TODO | TODO | TODO | TODO |
-| 6 | TODO | TODO | TODO | TODO | TODO |
-| Final pivot swap | N/A | N/A | TODO | N/A | TODO |
+| 1 | 8 | No | none | 0 | `[2, 8, 7, 1, 3, 5, 6, 4]` |
+| 2 | 7 | No | none | 0 | `[2, 8, 7, 1, 3, 5, 6, 4]` |
+| 3 | 1 | Yes | 1 and 3 | 1 | `[2, 1, 7, 8, 3, 5, 6, 4]` |
+| 4 | 3 | Yes | 2 and 4 | 2 | `[2, 1, 3, 8, 7, 5, 6, 4]` |
+| 5 | 5 | No | none | 2 | `[2, 1, 3, 8, 7, 5, 6, 4]` |
+| 6 | 6 | No | none | 2 |  `[2, 1, 3, 8, 7, 5, 6, 4]`  |
+| Final pivot swap | N/A | N/A | 3 and 7 (pivot) | N/A | `[2, 1, 3, 4, 7, 5, 6, 8]` |
 
 Record the returned pivot index and the left and right subarrays.
 
@@ -209,10 +217,14 @@ python3 quicksort_practice.py
 **TODO 2.3A:** Why is the pivot excluded from the scanning loop? Why do we need
 the final swap?
 
+*Because we are comparing all elements with the pivot to determine what elements are larger and smaller. Smaller or equal to, goes to the left, and larger to the right. The final swap ensures that applies to the position of the pivot at the end of the swap.*
+
 **TODO 2.3B:** For `[5, 5, 5, 5, 5]`, find the final `i`, returned pivot index,
 and sizes of the two recursive subproblems. Explain why repeating this split
 leads to O(n²) Quicksort time. What split occurs on ascending, distinct values
 when the last element is always chosen as pivot?
+
+*There would be a swap for every element which would lead to O(n^2) Quicksort time. The last element is the largest for ascending distinct values, so every comparison is true causing the split to be n - 1 elements on the left and 0 on the right.*
 
 ## Part 3: Merge Sort
 
@@ -247,6 +259,14 @@ MERGE(left, right)
 **TODO 3.1A:** Start with `[7, 2, 6, 3]`. Write the two halves, the single-element
 lists, the two sorted pairs, and the final sorted list.
 
+[7, 2] [6, 3]
+
+[7] [2] [6] [3]
+
+[2, 7]  [3, 6]
+
+[2, 3, 6, 7]
+
 Worked merge example: merging `[2, 7]` and `[3, 6]` takes 2, then 3, then 6.
 The right list is exhausted, so the remaining 7 is appended.
 
@@ -256,12 +276,15 @@ list on equal values. `i` and `j` below are their values before the comparison.
 | `i` | `j` | Values compared | Take from left or right? | Result so far |
 |---|---|---|---|---|
 | 0 | 0 | 2 and 1 | Right | `[1]` |
-| TODO | TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO | TODO |
+| 0 | 1 | 2 and 5 | Left | `[1, 2]` |
+| 1 | 1 | 5 and 5 | Left | `[1, 2, 5]` |
+| 2 | 1 | 8 and 5 | Right | `[1, 2, 5, 5]` |
+| 2 | 2 | 8 and 9 | Left | `[1, 2, 5, 5, 8]` |
 
 Which list has elements remaining, and what is appended after the loop?
+
+*Right list, and 9 will be appended after the loop. FINAL = `[1, 2, 5, 5, 8, 9]`*
+
 
 ### 3.2 Implement merging
 
@@ -319,6 +342,15 @@ For `[4, 10, 8, 30, 15, 20, 16]`, the levels are:
 value of index 6, and all leaf indices. Is this a min-heap? Explain using the
 parent-child comparisons, not whether the list looks sorted.
 
+*Children of index 1:*
+
+*left: 2 * i + 1 -> 3, value = 30*
+
+
+*right: 2 * i + 2 -> 4, value = 15*
+
+*Parent of index 6:*
+*(i - 1) // 2 -> 2, value = 8*
 ### 4.2 Restore the heap with sift-down
 
 Sift-down repairs a node that may be larger than one of its children.
