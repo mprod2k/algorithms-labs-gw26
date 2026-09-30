@@ -332,6 +332,8 @@ python3 bst_practice.py
 **TODO 2.4A:** In a two-child deletion (Case 3), why is the in-order successor
 guaranteed never to have a left child?
 
+Because the successor it the minimum value in the right subtree, and the minimum value is already a left leaf.
+
 **TODO 2.4B:** When deleting the root node of the tree, what special pointer
 updates must take place regarding `tree.root` and `node.parent`?
 
