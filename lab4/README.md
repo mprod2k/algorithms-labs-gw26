@@ -178,7 +178,7 @@ worked.
 |---|---|---|---|---|
 | 10 | 0 children (leaf) | None | 10 | `[20, 30, 40, 50, 60, 70]` |
 | 20 | 1 child (node) | None | 20 | `[30, 40, 50, 60, 70]` |
-| 40 | TODO | TODO | TODO | TODO |
+| 40 | 2 children (node) | 60 | 60 spliced, 50 replace 40 | `[30, 50, 60, 70]` |
 
 ### 1.3 Implementation
 
@@ -196,8 +196,12 @@ python3 bst_practice.py
 **TODO 1.4A:** In a two-child deletion (Case 3), why is the in-order successor
 guaranteed never to have a left child?
 
+Because the in-order successor is the minimum of the right subtree, if it had a left child that would defeat the purpose of it being a minimum value in a BST.
+
 **TODO 1.4B:** When deleting the root node of the tree, what special pointer
 updates must take place regarding `tree.root` and `node.parent`?
+
+When the root node is deleted, tree.root must be updated to point to the replacement node. The replacement node’s parent pointer must also be set to None, since the root has no parent.
 
 All three basic BST operations (search, insert, delete) run in $O(h)$ time,
 where $h$ is the height of the tree. The iterative implementations require

@@ -97,16 +97,30 @@ have a different height, creating imbalances higher up.
 ### 1.1 Short answer: BST deletion reminder
 
 **TODO 1.1:** Briefly recall the three deletion cases from Lab 3/4:
-- What happens when the target node has 0 children?
-- What happens when the target node has 1 child?
-- What happens when the target node has 2 children, and why is the in-order successor used?
+- What happens when the target node has 0 children? 
+
+*- It is a leaf node, no action is neccessary.*
+- What happens when the target node has 1 child? 
+
+*- If the target node has a parent node, then the child of the target node has to be connected to that parent node, then rebalancing may occur*
+- What happens when the target node has 2 children, and why is the in-order successor used? 
+
+*- If the target node has 2 children then the minimum value in the nodes right subtree must be used to ensure the replacing nodes left child is less than it, and the nodes right child is larger than it.*
 
 ### 1.2 Short answer: Height change after deletion
 
 **TODO 1.2:** When you delete a leaf node from an AVL tree:
 - Does the leaf's parent's height change? By how much?
+
+*- if the leaf's parent has only one child then its height would change by -1. Otherwise, the height won't change*
+
 - Can the grandparent's height change?
+
+*- yes it is possible for the grandparent's height to change with the same case: if the leaf's parent has only one child*
+
 - Can the imbalance propagate to the root?
+
+*- yes the imbalance can propagate to the root. 
 
 ---
 
