@@ -120,7 +120,7 @@ have a different height, creating imbalances higher up.
 
 - Can the imbalance propagate to the root?
 
-*- yes the imbalance can propagate to the root. 
+*- yes the imbalance can propagate to the root. It happens when the deleted node causes an imbalance and a LL, RR, RL, or LR shift causes another imbalance where the same shift has to occur, all the way to the root.* 
 
 ---
 
@@ -145,17 +145,50 @@ Start with this AVL tree:
 **TODO 2.1:** Delete key `40` from this tree. Trace the rebalancing:
 
 1. Perform BST deletion of 40 (it's a leaf). What is the tree after deletion?
+
+```
+      30
+     /
+   20
+   /
+  10
+```
+
 2. Rebalance from the parent of the deleted node (30).
+
+```
+      30
+     /
+   20
+   /
+  10
+```
+
 3. What is the balance factor at 30?
+
+- 2 (Assuming 0 conversion)
+
 4. Identify the violation signature (LL, RR, LR, or RL) and the required rotation.
+
+- LL Violation, rotate right
+
 5. After rotation, is the tree still imbalanced? If so, continue rebalancing.
+
+- No, the tree is not imbalanced after rebalancing.
+
 6. Draw the final tree and record the in-order traversal.
+
+```
+  20
+ /  \
+10  30
+```
 
 | Step | Action | Tree state | Unbalanced node | BF | Signature | Rotation | Notes |
 |---|---|---|---|---|---|---|---|
 | 1 | Delete 40 | 40 is removed (leaf) | - | - | - | - | Tree now has 30 root, 20 left, nothing right |
-| 2 | Rebalance from 30 | TODO | TODO | TODO | TODO | TODO | TODO |
-| 3 | After rotation | TODO | TODO | TODO | - | - | Final state |
+| 2 | Rebalance from 30 | Tree is rotated right | Root | +2 | LL | Right | Tree now has 30 root, 20 left, 10 left leaf |
+| 3 | After rotation | Tree is balanced | - | 0 | - | - | Final state |
 
 ### 2.2 Trace: Double rotation after deletion
 
@@ -180,7 +213,7 @@ Start with this AVL tree:
 
 | Step | Action | Current node | BF before | Signature | Rotation applied | BF after |
 |---|---|---|---|---|---|---|
-| 1 | Delete 40 | 30 | TODO | TODO | TODO | TODO |
+| 1 | Delete 40 | 30 | +2 | LR | Rotate Left, Rotate Right | 0 |
 | 2 | Verify final | - | - | - | - | - |
 
 ### 2.3 Trace: Two-child deletion with rebalancing
@@ -208,8 +241,8 @@ Trace the rebalancing:
 
 | Step | Current node | BF | Imbalanced? | Violation | Rotation applied |
 |---|---|---|---|---|---|
-| 1 | (after replacing 30 with 40) | TODO | TODO | TODO | TODO |
-| 2 | (if needed, continue up) | TODO | TODO | TODO | TODO |
+| 1 | (after replacing 30 with 40) | +2 at 40 | YES | LL | Rotate Right |
+| 2 | (if needed, continue up) | 0 | NO | - | - |
 
 ---
 
@@ -259,8 +292,16 @@ measuring the number of rotations triggered by each operation.
 
 1. Why can a single deletion trigger multiple rotations at different ancestors,
    whereas a single insertion triggers at most one rotation?
+
+*- Because deletion has three cases, which can trigger imbalances to parent and grandparent nodes. A single insertion triggers at most one rotation because insertion maintains the relative architecture and the height of the tree tends to not be altered.*
+
 2. What property of rotations ensures that insertion stops after one fix?
+
+*- Height preservation*
+
 3. Does a deletion ever need to rebalance higher than the root? Explain.
+
+*- rebalancing can't occur past the root*
 
 ### 4.2 Short answer: Real-world implications
 
@@ -268,8 +309,13 @@ measuring the number of rotations triggered by each operation.
 in an AVL tree (e.g., a priority queue or cache).
 
 1. Based on the rotation cost, would you expect insertions or deletions to be slower?
+
+*- deletions would be slower because they can trigger multiple rotations all the way up to the root*
+
 2. If deletions become a bottleneck, what alternative data structure (from this course)
    might handle deletions more efficiently?
+
+*-bucket or hash data structures*
 
 ---
 
