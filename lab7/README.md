@@ -84,9 +84,10 @@ occurs. Record where $j$ stops and whether you add $s$ to the results.
 | Shift `s` | Text indices checked | Final `j` | Append `s`? |
 |---|---|---|---|
 | 1 | `1` | 0 | No |
-| 2 | TODO | TODO | TODO |
-| 4 | TODO | TODO | TODO |
-| 5 | TODO | TODO | TODO |
+| 2 | `2` | `1` | No |
+| 3 | `1` | 0 | No |
+| 4 | `2` | `1` | No |
+| 5 | `3` | `3` | YES |
 
 ### 1.2 Implementation
 
@@ -174,9 +175,15 @@ At shift `6`, the hash is `7`; all five characters match, so record `6`.
 1. **Move from shift `6` to `7`.** Which digit leaves the window, and which
    digit enters? Substitute them into the rolling-hash formula and calculate
    the new hash.
+
+   Digit 3 leaves the window and 2 enters. h = $10^{4}$ mod 13 = 3. hash = ((10(7 - 3 * 3) + 2) mod 13) = ((-20 + 2) mod 13) = -18 mod 13 = 8
+
+
 2. **Check shift `12`.** Its hash is `7`, so compare the characters. List the
    text and pattern indices checked before stopping. Is this a match or a
    spurious hit?
+
+   Compared characters before stopping: T[12], P[0]. This is a spurious hit since 6 and 3 are not equal.
 
 ### 2.2 Implementation
 
@@ -203,8 +210,8 @@ hash comparisons and character checks.
 
 | Case | Build hashes | Search | Total |
 |---|---|---|---|
-| Best | TODO | TODO | TODO |
-| Worst | TODO | TODO | TODO |
+| Best | O(m) | O(n) | O(n + m) |
+| Worst | O(m) | O(n * m) | O(n * m) |
 
 For each case, explain in one sentence how many windows need character checks
 and how many characters are checked in each one.
