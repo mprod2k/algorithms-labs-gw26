@@ -308,11 +308,15 @@ The first row is worked: `P[2] == P[4]`, so `k` increases to `3`.
 | Index `j` | Starting `k` | Fallbacks | `pi[j]` |
 |---|---|---|---|
 | 4 | 2 | none | 3 |
-| 5 | 3 | TODO | TODO |
-| 6 | 0 | TODO | TODO |
+| 5 | 3 | 3 -> 1 -> 0 | 0 |
+| 6 | 0 | none | 1 |
 
 Now trace the matcher at `i = 8`, starting with `q = 6`. Which pattern index
 is compared with `T[8]`? What shift is recorded, and what is `q` afterward?
+
+P[6] = 'a' is compared with T[8]. And since P[6] = 'a' == 'a' = T[8], shift of 2 is recorded and q is 1 afterward.
+
+
 
 ### 3.2 Implementation
 
@@ -337,15 +341,15 @@ Give tight bounds in terms of $n$ and $m$.
 
 | Case | Build `pi` | Search | Total |
 |---|---|---|---|
-| Best | TODO | TODO | TODO |
-| Worst | TODO | TODO | TODO |
+| Best | O(m) | O(n) | O(n + m) |
+| Worst | O(m) | O(n) | O(n + m) |
 
 Explain the worst-case bound in a few lines. Across the whole scan, how often
 can `q` increase? How does that limit the number of fallbacks? Use the same
 reasoning for `k` when building `pi`.
 
 ---
-
+During the search, q starts at 0 and increases by at most 1 in T, so it can increase at most n times accross the entire scan. Since q never drops below 0, and every fallback reduces q by at least 1, the inner fallback loop executes at most n times total, bounding the search to O(n). When building pi, k starts at 0 and increases at most m-1 times, and bounds preprocessing to O(m) which gives a total of O(m + n)
 ## Final check
 
 Run the provided practice file from within the `lab7/` directory:
